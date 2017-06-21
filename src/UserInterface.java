@@ -6,8 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -22,7 +29,7 @@ import javax.swing.text.DefaultEditorKit;
 public class UserInterface extends JFrame {
 	File userFile;
 	public Container container;
-	
+
 	public JMenuBar menuBar;
 
 	public JTextArea textArea;
@@ -100,64 +107,142 @@ public class UserInterface extends JFrame {
 	}
 
 	public class NewFileActionListener implements ActionListener {
-		
-			
+
 		public void actionPerformed(ActionEvent e){
 			Frame frame = new Frame("Save File?");
 			int confirmDialog = JOptionPane.showConfirmDialog(
-				    frame,
-				    "Would you like the save the current file?",
-				    "Confirmation",
-			    JOptionPane.YES_NO_OPTION);
-			
-			textArea.setText("");
-			 
-			JFileChooser fileChooser = new JFileChooser();//doesnt close
-			fileChooser.setDialogTitle("Specify a directory");   
-			 
-			int userSelection = fileChooser.showSaveDialog(UserInterface.this);
-			 
-			if (userSelection == JFileChooser.APPROVE_OPTION) {
-				try {
-					userFile = fileChooser.getSelectedFile();
-					String fileName = userFile.toString();
-					if(fileName.contains(".")){
-					fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+					frame,
+					"Would you like the save the current file?",
+					"Confirmation",
+					JOptionPane.YES_NO_OPTION);
+			if (confirmDialog == JFileChooser.APPROVE_OPTION) {
+				try{
+					Writer writer = new BufferedWriter(new OutputStreamWriter(
+							new FileOutputStream(userFile)));
+					writer.write(textArea.getText());
+					writer.close();
+				}
+				catch(NullPointerException n){
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a directory");
+					int valueNew = fileChooser.showSaveDialog(UserInterface.this);
+					if (valueNew == JFileChooser.APPROVE_OPTION) {
+						try {
+							userFile = fileChooser.getSelectedFile();
+							String fileName = userFile.toString();
+							if(fileName.contains(".")){
+								fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+							}
+							fileName=fileName+".txt";
+							File userFile=new File(fileName);
+							Writer writer = new BufferedWriter(new OutputStreamWriter(
+									new FileOutputStream(userFile)));
+							writer.write(textArea.getText());
+							writer.close();
+						} catch (IOException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
 					}
-					fileName=fileName+".txt";
-					File userFile=new File(fileName);
-					userFile.createNewFile();
-				} catch (IOException e2) {
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e2.printStackTrace();
+					e1.printStackTrace();
 				}
 			}
+			textArea.setText("");
 		}
-
 	}
 
 	public class OpenFileActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Choose document");   
+
+			int valueNew = fileChooser.showOpenDialog(UserInterface.this);
+			if (valueNew == JFileChooser.APPROVE_OPTION) {
+				try {
+					userFile = fileChooser.getSelectedFile();
+					BufferedReader reader = new BufferedReader(new FileReader(userFile));
+					String nextLine="";
+					while((nextLine=reader.readLine()) != null){
+					textArea.append(nextLine);
+					}
+				}
+				catch(NullPointerException o){
+					userFile = fileChooser.getSelectedFile();
+					String fileName = userFile.toString();
+					if(fileName.contains(".")){
+						fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+					}
+					fileName=fileName+".txt";
+					File userFile=new File(fileName);
+					try {
+						userFile.createNewFile();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
+
+		public class SaveFileActionListener implements ActionListener {
+
+			public void actionPerformed(ActionEvent e) {
+				try{
+					Writer writer = new BufferedWriter(new OutputStreamWriter(
+							new FileOutputStream(userFile)));
+					writer.write(textArea.getText());
+					writer.close();
+				}
+				catch(NullPointerException n){
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a directory");   
+
+					int valueNew = fileChooser.showSaveDialog(UserInterface.this);
+
+					if (valueNew == JFileChooser.APPROVE_OPTION) {
+						try {
+							userFile = fileChooser.getSelectedFile();
+							String fileName = userFile.toString();
+							if(fileName.contains(".")){
+								fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+							}
+							fileName=fileName+".txt";
+							File userFile=new File(fileName);
+							userFile.createNewFile();
+							Writer writer = new BufferedWriter(new OutputStreamWriter(
+									new FileOutputStream(userFile)));
+							writer.write(textArea.getText());
+							writer.close();
+						} catch (IOException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+
+		}
+
+		public class CloseFileActionListener implements ActionListener {
+
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
 
 		}
 
 	}
-
-	public class SaveFileActionListener implements ActionListener {
-
-		public void actionPerformed(ActionEvent e) {
-
-		}
-
-	}
-	
-	public class CloseFileActionListener implements ActionListener {
-
-		public void actionPerformed(ActionEvent e) {
-			dispose();
-		}
-
-	}
-
-}
