@@ -93,9 +93,38 @@ public class UserInterface extends JFrame {
 	}
 
 	public class NewFileActionListener implements ActionListener {
-
-		public void actionPerformed(ActionEvent e) {
-
+		
+		//public void actionPerformed(ActionEvent e){
+		//	Frame frame = new Frame("Save File?");
+		//	int confirmDialog = JOptionPane.showConfirmDialog(
+		//		    frame,
+		//		    "Would you like the save the current file?",
+		//		    "Confirmation",
+		//		    JOptionPane.YES_NO_OPTION);
+		//}
+		public void actionPerformed(ActionEvent e){
+			textArea.setText("");
+			 
+			JFileChooser fileChooser = new JFileChooser();//doesnt close
+			fileChooser.setDialogTitle("Specify a directory");   
+			 
+			int userSelection = fileChooser.showSaveDialog(UserInterface.this);
+			 
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				try {
+					userFile = fileChooser.getSelectedFile();
+					String fileName = userFile.toString();
+					if(fileName.contains(".")){
+					fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+					}
+					fileName=fileName+".txt";
+					File userFile=new File(fileName);
+					userFile.createNewFile();
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+			}
 		}
 
 	}
