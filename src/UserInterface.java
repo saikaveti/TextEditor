@@ -96,4 +96,20 @@ public class UserInterface extends JFrame{
 		
 	}
 	
+	public class OpenFileActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+		
+	}
+	
+	public class SaveFileActionListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+		
+	}
+	
 }
