@@ -109,7 +109,7 @@ public class UserInterface extends JFrame {
 	public class NewFileActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e){
-			Frame frame = new Frame("Save File?");
+			Frame frame = new Frame("Save Current File?");
 			int confirmDialog = JOptionPane.showConfirmDialog(
 					frame,
 					"Would you like the save the current file?",
@@ -156,6 +156,47 @@ public class UserInterface extends JFrame {
 	public class OpenFileActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			Frame frame = new Frame("Save Current File?");
+			int confirmDialog = JOptionPane.showConfirmDialog(
+					frame,
+					"Would you like the save the current file?",
+					"Confirmation",
+					JOptionPane.YES_NO_OPTION);
+			if (confirmDialog == JFileChooser.APPROVE_OPTION) {
+				try{
+					Writer writer = new BufferedWriter(new OutputStreamWriter(
+							new FileOutputStream(userFile)));
+					writer.write(textArea.getText());
+					writer.close();
+				}
+				catch(NullPointerException n){
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a directory");
+					int valueNew = fileChooser.showSaveDialog(UserInterface.this);
+					if (valueNew == JFileChooser.APPROVE_OPTION) {
+						try {
+							userFile = fileChooser.getSelectedFile();
+							String fileName = userFile.toString();
+							if(fileName.contains(".")){
+								fileName = fileName.substring(0, fileName.lastIndexOf('.'));
+							}
+							fileName=fileName+".txt";
+							File userFile=new File(fileName);
+							Writer writer = new BufferedWriter(new OutputStreamWriter(
+									new FileOutputStream(userFile)));
+							writer.write(textArea.getText());
+							writer.close();
+						} catch (IOException e2) {
+							// TODO Auto-generated catch block
+							e2.printStackTrace();
+						}
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			textArea.setText("");
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle("Choose document");   
 
