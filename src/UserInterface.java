@@ -57,9 +57,13 @@ public class UserInterface extends JFrame{
         newFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
         
         openFile = new JMenuItem("Open");
+	openFile.addActionListener(new OpenFileActionListener());
+        openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
         
         saveFile = new JMenuItem("Save");
-        
+        saveFile.addActionListener(new SaveFileActionListener());
+        saveFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+		
         closeWindow = new JMenuItem("Close Editor");
         
         cutText = new JMenuItem(new DefaultEditorKit.CutAction());
