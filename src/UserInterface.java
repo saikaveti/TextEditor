@@ -119,7 +119,7 @@ public class UserInterface extends JFrame {
 	public class CloseFileActionListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-
+			dispose();
 		}
 
 	}
