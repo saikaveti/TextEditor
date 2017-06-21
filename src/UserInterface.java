@@ -1,21 +1,28 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 
 public class UserInterface extends JFrame {
+	File userFile;
 	public Container container;
-
+	
 	public JMenuBar menuBar;
 
 	public JTextArea textArea;
@@ -94,15 +101,15 @@ public class UserInterface extends JFrame {
 
 	public class NewFileActionListener implements ActionListener {
 		
-		//public void actionPerformed(ActionEvent e){
-		//	Frame frame = new Frame("Save File?");
-		//	int confirmDialog = JOptionPane.showConfirmDialog(
-		//		    frame,
-		//		    "Would you like the save the current file?",
-		//		    "Confirmation",
-		//		    JOptionPane.YES_NO_OPTION);
-		//}
+			
 		public void actionPerformed(ActionEvent e){
+			Frame frame = new Frame("Save File?");
+			int confirmDialog = JOptionPane.showConfirmDialog(
+				    frame,
+				    "Would you like the save the current file?",
+				    "Confirmation",
+			    JOptionPane.YES_NO_OPTION);
+			
 			textArea.setText("");
 			 
 			JFileChooser fileChooser = new JFileChooser();//doesnt close
