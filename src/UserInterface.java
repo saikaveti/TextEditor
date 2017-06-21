@@ -150,6 +150,7 @@ public class UserInterface extends JFrame {
 				}
 			}
 			textArea.setText("");
+			userFile=null;
 		}
 	}
 
@@ -198,7 +199,7 @@ public class UserInterface extends JFrame {
 			}
 			textArea.setText("");
 			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setDialogTitle("Choose document");   
+			fileChooser.setDialogTitle("Choose document to open");   
 
 			int valueNew = fileChooser.showOpenDialog(UserInterface.this);
 			if (valueNew == JFileChooser.APPROVE_OPTION) {
